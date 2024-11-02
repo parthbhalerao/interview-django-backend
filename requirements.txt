@@ -1,0 +1,16 @@
+Django>=5.0,<5.1
+django-ninja
+django-ninja-jwt[crypto]
+pydantic[email]
+rav
+gunicorn
+python-decouple
+psycopg[binary]
+dj-database-url
+requests
+whitenoise
+django-allauth[socialaccount]
+django-allauth-ui
+django-widget-tweaks
+slippers
+stripe

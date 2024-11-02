@@ -1,0 +1,19 @@
+scripts:
+  install:
+    - pip install -r requirements.txt
+  server:
+    - cd src && python manage.py runserver
+  test:
+    - cd src && python manage.py test
+  makemigrations:
+    - cd src && python manage.py makemigrations
+  migrate:
+    - cd src && python manage.py migrate
+  shell:
+    - cd src && python manage.py shell
+  set_token: |
+    export JWT_TOKEN="YOUR_TOKEN_HERE"
+  curl_auth: |
+    curl -X POST -H "Content-Type: application/json" -d '{"username": "parth", "password": "Parth@3010"}' http://localhost:8000/api/token/pair
+  curl_protect: |
+    curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNDk3Nzk5LCJpYXQiOjE3MzA0OTQxOTksImp0aSI6ImRjMDI4MDQzOGE0NjQ1MjBiNmRlY2JkMmFhNDdhZDBlIiwidXNlcl9pZCI6MX0.ZIFl7K9Cgi-f7MEqzOLuU3PRRL5j9DEcBaY4ZX0CFZI" http://localhost:8000/api/user/profile
