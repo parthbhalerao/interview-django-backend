@@ -18,7 +18,7 @@ from django.template.loader import render_to_string
 router = Router(tags=["Users"])
 User = get_user_model()
 
-@router.post("/register", response={201: dict, 400: dict}, auth=None)
+@router.post("/register/", response={201: dict, 400: dict}, auth=None)
 def register(request, data: RegisterSchema):
     try:
         user = User.objects.create_user(
@@ -39,9 +39,19 @@ def register(request, data: RegisterSchema):
     except Exception as e:
         return 422, {"detail": str(e)}
 
-@router.post("/login", response={200: dict, 401: dict}, auth=None)
+@router.post("/login/", response={200: dict, 401: dict}, auth=None)
 def login(request, data: LoginSchema):
-    user = authenticate(username=data.username, password=data.password)
+    # Try to authenticate with username
+    user = authenticate(username=data.username_or_email, password=data.password)
+    
+    # If username authentication fails, try with email
+    if user is None:
+        try:
+            user_obj = User.objects.get(email=data.username_or_email)
+            user = authenticate(username=user_obj.username, password=data.password)
+        except User.DoesNotExist:
+            user = None
+
     if user is not None:
         refresh = RefreshToken.for_user(user)
         return 200, {
@@ -52,6 +62,20 @@ def login(request, data: LoginSchema):
             }
         }
     return 401, {"error": "Invalid credentials"}
+
+@router.post("/logout/", response={200: dict}, auth=JWTAuth())
+def logout(request):
+    try:
+        # Get the token from the request
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            token = auth_header.split(' ')[1]
+            # Blacklist the token
+            RefreshToken(token).blacklist()
+        
+        return 200, {"message": "Successfully logged out"}
+    except Exception as e:
+        return 200, {"message": "Successfully logged out"}  # Always return success for security
 
 '''@router.post("/password/reset", response={200: dict, 400: dict}, auth=None)
 def password_reset_request(request, data: PasswordResetRequestSchema):

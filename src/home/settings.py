@@ -69,10 +69,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # SaaS Internal Apps
-    # "rest_framework",
-    # "corsheaders",
-
     # SaaS defined Apps
     "commando",
     "profiles",
@@ -92,13 +88,14 @@ INSTALLED_APPS = [
     "slippers",
     "ninja_jwt",
     "ninja_extra",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware", # Whitenoise
     "django.contrib.sessions.middleware.SessionMiddleware",
-    #"corsheaders.middleware.CorsMiddleware", # CORS
+    "corsheaders.middleware.CorsMiddleware", # CORS
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -107,13 +104,16 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 # Add CORS settings
-'''CORS_ALLOWED_ORIGINS = [
+CORS_URLS_REGEX = r'^/api/.*$'
+CORS_ALLOWED_ORIGINS = [
     #! TODO: Add production URL
     #! TODO: Add staging URL
-    "http://localhost:3000", # Next JS Localhost
-]'''
+    # Next JS Localhost
+    "http://localhost:3000", 
+    "http://127.0.0.1:3000", 
+]
 
-#CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "home.urls"
 
@@ -253,6 +253,9 @@ STORAGES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Handle trailing slashes
+APPEND_SLASH = True
 
 # Ninja
 NINJA_JWT = {

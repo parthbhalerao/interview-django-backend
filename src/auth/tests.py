@@ -100,7 +100,7 @@ class LoginAPITest(BaseAuthAPITest):
         response = self.client.post(
             self.login_url,
             data=json.dumps({
-                "username": self.user_data['username'],
+                "username_or_email": self.user_data['username'],
                 "password": self.user_data['password']
             }),
             content_type='application/json'
@@ -110,3 +110,17 @@ class LoginAPITest(BaseAuthAPITest):
         self.assertTrue('tokens' in response.json())
         self.assertTrue('access' in response.json()['tokens'])
         self.assertTrue('refresh' in response.json()['tokens'])
+
+    def test_login_with_email(self):
+        """Test successful login using email"""
+        response = self.client.post(
+            self.login_url,
+            data=json.dumps({
+                "username_or_email": self.user_data['email'],
+                "password": self.user_data['password']
+            }),
+            content_type='application/json'
+        )
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('tokens' in response.json())

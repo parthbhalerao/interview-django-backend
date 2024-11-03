@@ -9,7 +9,7 @@ api = NinjaExtraAPI()
 api.register_controllers(NinjaJWTDefaultController)
 
 # Register auth routes (/api/auth/*)
-api.add_router("/auth/", auth_router)
+api.add_router("/auth", auth_router)  # without trailing slash
 
 # Register customers routes (/api/customers/*)
-api.add_router("/customers/", customers_router)
+api.add_router("/customers", customers_router)

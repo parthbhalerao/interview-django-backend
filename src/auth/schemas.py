@@ -11,7 +11,7 @@ class UserSchema(Schema):
     last_name: str | None = None
 
 class LoginSchema(Schema):
-    username: str
+    username_or_email: str
     password: str
 
 class RegisterSchema(Schema):
