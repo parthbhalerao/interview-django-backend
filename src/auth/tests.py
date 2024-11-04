@@ -21,7 +21,7 @@ class BaseAuthAPITest(TransactionTestCase):
 class RegisterAPITest(BaseAuthAPITest):
     def setUp(self):
         super().setUp()
-        self.register_url = '/api/auth/register'
+        self.register_url = '/api/auth/register/'
 
     def test_successful_registration(self):
         """Test successful user registration"""
@@ -91,7 +91,7 @@ class RegisterAPITest(BaseAuthAPITest):
 class LoginAPITest(BaseAuthAPITest):
     def setUp(self):
         super().setUp()
-        self.login_url = '/api/auth/login'
+        self.login_url = '/api/auth/login/'
         # Create a test user for login tests
         self.user = User.objects.create_user(**self.user_data)
 

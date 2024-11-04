@@ -255,7 +255,7 @@ STORAGES = {
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Handle trailing slashes
-APPEND_SLASH = True
+APPEND_SLASH = False
 
 # Ninja
 NINJA_JWT = {
