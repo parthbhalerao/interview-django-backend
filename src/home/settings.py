@@ -69,13 +69,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # SaaS defined Apps
+    # Internal Apps
     "commando",
     "profiles",
     "subscriptions",
     "customers",
     "visits",
-    
+    "interviews",
+    "jobs",
 
     # Third party apps
     "allauth_ui",
@@ -262,3 +263,20 @@ NINJA_JWT = {
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=7),
 }
+
+# Livekit Settings
+LIVEKIT_API_KEY = config("LIVEKIT_API_KEY", default=None)
+LIVEKIT_API_SECRET = config("LIVEKIT_API_SECRET", default=None)
+LIVEKIT_URL = config("LIVEKIT_URL", default=None)
+
+# OpenAI Settings
+OPENAI_API_KEY = config("OPENAI_API_KEY", default=None)
+
+# Deepgram Settings
+DEEPGRAM_API_KEY = config("DEEPGRAM_API_KEY", default=None)
+
+# ElevenLabs Settings
+ELEVENLABS_API_KEY = config("ELEVENLABS_API_KEY", default=None)
+
+# Apollo.io Settings
+APOLLO_IO_API_KEY = config("APOLLO_IO_API_KEY", default=None)

@@ -14,6 +14,7 @@ from .schemas import (
 )
 import helpers.billing
 from subscriptions import utils as subs_utils
+from django.conf import settings
 
 router = Router(tags=["Subscriptions"])
 
@@ -89,3 +90,22 @@ def refresh_subscription(request: HttpRequest):
 def get_subscription_price(request: HttpRequest, price_id: int):
     """Get details for a specific subscription price"""
     return get_object_or_404(SubscriptionPrice, id=price_id)
+
+@router.post("/checkout/{price_id}", response={200: dict, 400: ErrorResponseSchema}, auth=JWTAuth())
+def create_checkout_session(request: HttpRequest, price_id: int):
+    """Create a Stripe checkout session for subscription"""
+    try:
+        price_obj = get_object_or_404(SubscriptionPrice, id=price_id)
+        customer_stripe_id = request.auth.customer.stripe_id
+        
+        url = helpers.billing.start_checkout_session(
+            customer_stripe_id,
+            success_url=f"{settings.BASE_URL}/api/subscriptions/checkout/success?session_id={{CHECKOUT_SESSION_ID}}", 
+            cancel_url=f"{settings.BASE_URL}/pricing",
+            price_stripe_id=price_obj.stripe_id,
+            raw=False
+        )
+        
+        return 200, {"checkout_url": url}
+    except Exception as e:
+        return 400, {"detail": str(e)}
