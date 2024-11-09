@@ -116,7 +116,7 @@ def password_reset_confirm(request, data: PasswordResetConfirmSchema):
     except Exception as e:
         return 400, {"error": "Invalid or expired token"}'''
 
-@router.post("/token/refresh", response={200: dict, 401: dict}, auth=None)
+@router.post("/token/refresh/", response={200: dict, 401: dict}, auth=None)
 def token_refresh(request, data: TokenRefreshSchema):
     try:
         refresh = RefreshToken(data.refresh)
